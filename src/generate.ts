@@ -2,7 +2,6 @@ import fs from "fs";
 import "dotenv/config";
 import { fakerPT_BR } from "@faker-js/faker";
 
-
 function generateCPF(): string {
   const n = () => Math.floor(Math.random() * 10);
 
@@ -47,21 +46,20 @@ function generateCPF(): string {
 }
 
 const main = async () => {
-
-  const quantity = 10;
+  const quantity = 1000000;
 
   const requests: string[] = [];
   const requests2: string[] = [];
 
   // generate create user requests
   for (let i = 1; i < quantity; i += 1) {
-    const user ={
+    const user = {
       name: fakerPT_BR.person.firstName(),
-      cpf: generateCPF(),
+      CPF: generateCPF(),
       email: fakerPT_BR.internet.email(),
       password: fakerPT_BR.internet.password(),
       phone: fakerPT_BR.phone.number(),
-    }
+    };
     requests.push(JSON.stringify(user));
   }
 
