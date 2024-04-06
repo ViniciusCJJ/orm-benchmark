@@ -3,9 +3,11 @@ import http from "k6/http";
 
 const data = JSON.parse(open("./data/requests2.json"));
 
-const hostPrisma = `http://localhost:3331`;
-const hostTypeorm = `http://localhost:3332`;
-const hostSequelize = `http://localhost:3333`;
+const hosts = {
+  prisma: `http://localhost:3331`,
+  typeorm: `http://localhost:3332`,
+  sequelize: `http://localhost:3333`,
+};
 
 export const options = {
   vus: 1, // Number of virtual users
@@ -13,7 +15,12 @@ export const options = {
 };
 
 export default function () {
-  const url = `${hostPrisma}${"/user"}`;
+  if (!__ENV.HOST) throw new Error("HOST is required");
+  if (!hosts[__ENV.HOST]) throw new Error("Invalid HOST");
+  if (!__ENV.ENDPOINT) throw new Error("ENDPOINT is required");
+
+  const selectedHost = hosts[__ENV.HOST];
+  const url = `${selectedHost}/${__ENV.ENDPOINT}`;
 
   http.post(
     url,
