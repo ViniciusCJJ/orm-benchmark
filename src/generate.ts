@@ -42,17 +42,19 @@ function generateCPF(): string {
   const d2Rest = d2 % 11;
   const digito2 = d2Rest < 2 ? 0 : 11 - d2Rest;
 
-  return `${n1}${n2}${n3}.${n4}${n5}${n6}.${n7}${n8}${n9}-${digito1}${digito2}`;
+  return `${n1}${n2}${n3}${n4}${n5}${n6}${n7}${n8}${n9}${digito1}${digito2}`;
 }
 
 const main = async () => {
   const quantity = 1000000;
 
   const requests: string[] = [];
-  const requests2: string[] = [];
 
+  const type = process.env.TYPE || "user";
+
+  if(type === "user") {
   // generate create user requests
-  for (let i = 1; i < quantity; i += 1) {
+  for (let i = 0; i < quantity; i += 1) {
     const user = {
       name: fakerPT_BR.person.firstName(),
       CPF: generateCPF(),
@@ -62,9 +64,31 @@ const main = async () => {
     };
     requests.push(JSON.stringify(user));
   }
+}
 
-  //fs.writeFileSync("./data/requests.json", JSON.stringify(requests));
-  fs.writeFileSync("./data/requests2.json", JSON.stringify(requests));
+  if(type === "relationship") { 
+  // generate create user requests whith address
+  for (let i = 0; i < quantity; i += 1) {
+    const user = {
+      name: fakerPT_BR.person.firstName(),
+      CPF: generateCPF(),
+      email: fakerPT_BR.internet.email(),
+      password: fakerPT_BR.internet.password(),
+      phone: fakerPT_BR.phone.number(),
+      address: {
+        street: fakerPT_BR.location.street(),
+        number: fakerPT_BR.location.buildingNumber(),
+        city: fakerPT_BR.location.city(),
+        state: fakerPT_BR.location.state(),
+        country: fakerPT_BR.location.country(),
+        zipCode: fakerPT_BR.location.zipCode(),
+      },
+    };
+    requests.push(JSON.stringify(user));
+  }
+}
+
+  fs.writeFileSync("./data/requests.json", JSON.stringify(requests));
 
   process.exit(0);
 };
