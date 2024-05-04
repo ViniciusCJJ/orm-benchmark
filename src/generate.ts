@@ -1,5 +1,6 @@
 import fs from "fs";
 import "dotenv/config";
+import { v4 } from 'uuid';
 import { fakerPT_BR } from "@faker-js/faker";
 
 function generateCPF(): string {
@@ -56,11 +57,14 @@ const main = async () => {
   // generate create user requests
   for (let i = 0; i < quantity; i += 1) {
     const user = {
+      id: v4(),
       name: fakerPT_BR.person.firstName(),
       CPF: generateCPF(),
       email: fakerPT_BR.internet.email(),
       password: fakerPT_BR.internet.password(),
       phone: fakerPT_BR.phone.number(),
+      created_at: new Date(),
+      updated_at: new Date(),
     };
     requests.push(JSON.stringify(user));
   }
@@ -70,11 +74,14 @@ const main = async () => {
   // generate create user requests whith address
   for (let i = 0; i < quantity; i += 1) {
     const user = {
+      id: v4(),
       name: fakerPT_BR.person.firstName(),
       CPF: generateCPF(),
       email: fakerPT_BR.internet.email(),
       password: fakerPT_BR.internet.password(),
       phone: fakerPT_BR.phone.number(),
+      created_at: new Date(),
+      updated_at: new Date(),
       address: {
         street: fakerPT_BR.location.street(),
         number: fakerPT_BR.location.buildingNumber(),
