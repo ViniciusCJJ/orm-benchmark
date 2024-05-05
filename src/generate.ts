@@ -49,7 +49,7 @@ function generateCPF(): string {
 const main = async () => {
   const quantity = 10;
 
-  const requests: string[] = [];
+  const requests: any[] = [];
 
   const type = process.env.TYPE || "user";
 
@@ -73,7 +73,7 @@ const main = async () => {
   if (type === "prisma") {
     // generate create user requests whith address
     for (let i = 0; i < quantity; i += 1) {
-      const user = {
+      let user = {
         id: v4(),
         name: fakerPT_BR.person.firstName(),
         CPF: generateCPF(),
@@ -96,6 +96,18 @@ const main = async () => {
           },
         },
       };
+      Object.assign(user, {
+        cart: {
+          create: {
+            id: v4(),
+            user_id: user.id,
+            expires_at: new Date(),
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        },
+      });
+
       requests.push(JSON.stringify(user));
     }
   }
@@ -131,7 +143,6 @@ const main = async () => {
   }
 
   if (type === "sequelize") {
-    // generate create user requests whith address
     for (let i = 0; i < quantity; i += 1) {
       const user = {
         id: v4(),
@@ -155,13 +166,48 @@ const main = async () => {
             updated_at: new Date(),
           },
         ],
+        carts: [
+          {
+            id: v4(),
+            status: "EM_PROCESSAMENTO",
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        ],
+        include: ["address", "cart"],
       };
+
       requests.push(JSON.stringify(user));
     }
   }
+
+  console.dir(requests, { depth: null });
 
   fs.writeFileSync("./data/requests.json", JSON.stringify(requests));
 
   process.exit(0);
 };
+
+function assignSequelizeInclude(
+  request: { [key: string]: any },
+  include = [{}]
+) {
+  const keys = Object.keys(request);
+  const arrayType = keys.filter((key) => Array.isArray(request[key]));
+
+  arrayType.map((key) => {
+    const isListObject = request[key].every(
+      (item: any) => typeof item === "object"
+    );
+    if (!isListObject) return;
+
+    request[key] = request[key].map((item: any) => {
+      include.push({
+        association: request.model + "." + item.model,
+      });
+      return assignSequelizeInclude(item, include);
+    });
+  });
+}
+
 main();
