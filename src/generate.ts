@@ -1,6 +1,6 @@
 import fs from "fs";
 import "dotenv/config";
-import { v4 } from 'uuid';
+import { v4 } from "uuid";
 import { fakerPT_BR } from "@faker-js/faker";
 
 function generateCPF(): string {
@@ -47,53 +47,118 @@ function generateCPF(): string {
 }
 
 const main = async () => {
-  const quantity = 1000000;
+  const quantity = 10;
 
   const requests: string[] = [];
 
   const type = process.env.TYPE || "user";
 
-  if(type === "user") {
-  // generate create user requests
-  for (let i = 0; i < quantity; i += 1) {
-    const user = {
-      id: v4(),
-      name: fakerPT_BR.person.firstName(),
-      CPF: generateCPF(),
-      email: fakerPT_BR.internet.email(),
-      password: fakerPT_BR.internet.password(),
-      phone: fakerPT_BR.phone.number(),
-      created_at: new Date(),
-      updated_at: new Date(),
-    };
-    requests.push(JSON.stringify(user));
+  if (type === "user") {
+    // generate create user requests
+    for (let i = 0; i < quantity; i += 1) {
+      const user = {
+        id: v4(),
+        name: fakerPT_BR.person.firstName(),
+        CPF: generateCPF(),
+        email: fakerPT_BR.internet.email(),
+        password: fakerPT_BR.internet.password(),
+        phone: fakerPT_BR.phone.number(),
+        created_at: new Date(),
+        updated_at: new Date(),
+      };
+      requests.push(JSON.stringify(user));
+    }
   }
-}
 
-  if(type === "relationship") { 
-  // generate create user requests whith address
-  for (let i = 0; i < quantity; i += 1) {
-    const user = {
-      id: v4(),
-      name: fakerPT_BR.person.firstName(),
-      CPF: generateCPF(),
-      email: fakerPT_BR.internet.email(),
-      password: fakerPT_BR.internet.password(),
-      phone: fakerPT_BR.phone.number(),
-      created_at: new Date(),
-      updated_at: new Date(),
-      address: {
-        street: fakerPT_BR.location.street(),
-        number: fakerPT_BR.location.buildingNumber(),
-        city: fakerPT_BR.location.city(),
-        state: fakerPT_BR.location.state(),
-        country: fakerPT_BR.location.country(),
-        zipCode: fakerPT_BR.location.zipCode(),
-      },
-    };
-    requests.push(JSON.stringify(user));
+  if (type === "prisma") {
+    // generate create user requests whith address
+    for (let i = 0; i < quantity; i += 1) {
+      const user = {
+        id: v4(),
+        name: fakerPT_BR.person.firstName(),
+        CPF: generateCPF(),
+        email: fakerPT_BR.internet.email(),
+        password: fakerPT_BR.internet.password(),
+        phone: fakerPT_BR.phone.number(),
+        created_at: new Date(),
+        updated_at: new Date(),
+        address: {
+          create: {
+            id: v4(),
+            street: fakerPT_BR.location.street(),
+            number: fakerPT_BR.location.buildingNumber(),
+            city: fakerPT_BR.location.city(),
+            state: fakerPT_BR.location.state(),
+            zip_code: fakerPT_BR.location.zipCode(),
+            district: fakerPT_BR.location.county(),
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        },
+      };
+      requests.push(JSON.stringify(user));
+    }
   }
-}
+
+  if (type === "typeorm") {
+    // generate create user requests whith address
+    for (let i = 0; i < quantity; i += 1) {
+      const user = {
+        id: v4(),
+        name: fakerPT_BR.person.firstName(),
+        CPF: generateCPF(),
+        email: fakerPT_BR.internet.email(),
+        password: fakerPT_BR.internet.password(),
+        phone: fakerPT_BR.phone.number(),
+        created_at: new Date(),
+        updated_at: new Date(),
+        addresses: [
+          {
+            id: v4(),
+            street: fakerPT_BR.location.street(),
+            number: fakerPT_BR.location.buildingNumber(),
+            city: fakerPT_BR.location.city(),
+            state: fakerPT_BR.location.state(),
+            zip_code: fakerPT_BR.location.zipCode(),
+            district: fakerPT_BR.location.county(),
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        ],
+      };
+      requests.push(JSON.stringify(user));
+    }
+  }
+
+  if (type === "sequelize") {
+    // generate create user requests whith address
+    for (let i = 0; i < quantity; i += 1) {
+      const user = {
+        id: v4(),
+        name: fakerPT_BR.person.firstName(),
+        CPF: generateCPF(),
+        email: fakerPT_BR.internet.email(),
+        password: fakerPT_BR.internet.password(),
+        phone: fakerPT_BR.phone.number(),
+        created_at: new Date(),
+        updated_at: new Date(),
+        addresses: [
+          {
+            id: v4(),
+            street: fakerPT_BR.location.street(),
+            number: fakerPT_BR.location.buildingNumber(),
+            city: fakerPT_BR.location.city(),
+            state: fakerPT_BR.location.state(),
+            zip_code: fakerPT_BR.location.zipCode(),
+            district: fakerPT_BR.location.county(),
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+        ],
+      };
+      requests.push(JSON.stringify(user));
+    }
+  }
 
   fs.writeFileSync("./data/requests.json", JSON.stringify(requests));
 
