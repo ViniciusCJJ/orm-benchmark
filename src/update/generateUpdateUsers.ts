@@ -3,7 +3,7 @@ import { generateUsers } from "../create/generateUsers";
 import { generateRead } from "../read/generateRead";
 
 const main = async () => {
-  generateRead();
+  generateRead("user");
   generateUsers();
 };
 

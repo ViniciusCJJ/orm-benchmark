@@ -6,13 +6,13 @@ import { generateCPF } from "../utils/generateCPF";
 import { getPaginated } from "../utils/getPaginated";
 import { validateModelName } from "../utils/validateModelName";
 
-export const generateRead = async () => {
+export const generateRead = async (type?: string) => {
   const quantity = 1000;
 
   const ids: any[] = [];
 
   const result = await getPaginated(
-    validateModelName(process.env.TYPE),
+    validateModelName(process.env.TYPE || type),
     0,
     quantity
   );
