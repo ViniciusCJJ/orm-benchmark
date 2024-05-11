@@ -2,10 +2,10 @@ import fs from "fs";
 import "dotenv/config";
 import { v4 } from "uuid";
 import { fakerPT_BR } from "@faker-js/faker";
-import { generateCPF } from "./utils/generateCPF";
+import { generateCPF } from "../utils/generateCPF";
 
 const main = async () => {
-  const quantity = 2;
+  const quantity = 1000;
 
   const requests: any[] = [];
 

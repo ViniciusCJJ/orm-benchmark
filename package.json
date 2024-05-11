@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:generate:users": "cross-env TYPE=$TYPE tsx ./src/generateUsers.ts",
-    "dev:generate:relations": "cross-env TYPE=$TYPE tsx ./src/generateUsersWithRelations.ts"
+    "dev:generate:users": "cross-env TYPE=$TYPE tsx ./src/create/generateUsers.ts",
+    "dev:generate:relations": "cross-env TYPE=$TYPE tsx ./src/create/generateUsersWithRelations.ts",
+    "dev:generate:read": "cross-env TYPE=$TYPE tsx ./src/read/generateRead.ts"
   },
   "keywords": [],
   "author": "",
