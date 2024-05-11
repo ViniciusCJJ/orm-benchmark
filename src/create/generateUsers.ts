@@ -4,7 +4,7 @@ import { v4 } from "uuid";
 import { fakerPT_BR } from "@faker-js/faker";
 import { generateCPF } from "../utils/generateCPF";
 
-const main = async () => {
+export const generateUsers = async () => {
   const quantity = 1000;
 
   const requests: any[] = [];
@@ -34,4 +34,4 @@ const main = async () => {
   process.exit(0);
 };
 
-main();
+generateUsers();

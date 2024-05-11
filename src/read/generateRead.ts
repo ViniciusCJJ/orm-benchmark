@@ -6,7 +6,7 @@ import { generateCPF } from "../utils/generateCPF";
 import { getPaginated } from "../utils/getPaginated";
 import { validateModelName } from "../utils/validateModelName";
 
-const main = async () => {
+export const generateRead = async () => {
   const quantity = 1000;
 
   const ids: any[] = [];
@@ -29,4 +29,4 @@ const main = async () => {
   process.exit(0);
 };
 
-main();
+generateRead();
