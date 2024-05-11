@@ -5,16 +5,30 @@ sequelize: http://localhost:3333
 - Gerar dados:
 
   - Exemplos de scripts para gerar dados:
+
     - create
+
       - yarn dev:generate:users
       - $env:TYPE="prisma"; yarn dev:generate:relations
+      - $env:TYPE="typeorm"; yarn dev:generate:relations
+      - $env:TYPE="sequelize"; yarn dev:generate:relations
+
     - read
+
       - $env:TYPE="user"; yarn dev:generate:read
 
 - Executar testes:
+  Após gerar os dados, execute os testes:
 
-  - yarn test:prisma:create:user
-  - yarn test:prisma:read:user
+  - create
+
+    - yarn test:prisma:create:user
+    - yarn test:typeorm:create:user
+    - yarn test:sequelize:create:user
+
+  - read
+
+    - yarn test:prisma:read:user
 
   - Exemplos usando o k6 diretamente:
 
