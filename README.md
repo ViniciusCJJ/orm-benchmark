@@ -4,17 +4,25 @@ sequelize: http://localhost:3333
 
 - Gerar dados:
 
-  - Script para gerar dados (usuários):
-    - yarn dev:generate:users
-  - Script para gerar dados com relações:
-    - $env:TYPE="relationship"; yarn dev:generate:relations
+  - Exemplos de scripts para gerar dados:
+    - create
+      - yarn dev:generate:users
+      - $env:TYPE="prisma"; yarn dev:generate:relations
+    - read
+      - $env:TYPE="user"; yarn dev:generate:read
 
 - Executar testes:
 
-  - Ex Script start tests:
+  - yarn test:prisma:create:user
+  - yarn test:prisma:read:user
+
+  - Exemplos usando o k6 diretamente:
+
     - k6 run -e HOST=http://localhost:3331 -e ENDPOINT=user -e DATA_FILE=./data/requests.json -e HTTP_METHOD=post -e VUS=1 -e ITERATIONS=1000 bench.js
     - k6 run -e HOST=http://localhost:3331 -e ENDPOINT=user -e DATA_FILE=./data/requests.json -e PATH_VARS_FILE=./data/path_requests.json -e HTTP_METHOD=post -e VUS=1 -e ITERATIONS=1000 bench.js
-  - Ex Script start tests e salvar output na nuvem:
+
+  - Exemplos usando o k6 diretamente e salvar output na nuvem:
+
     - k6 run --out cloud -e HOST=http://localhost:3332 -e ENDPOINT=user -e DATA_FILE=./data/requests.json -e HTTP_METHOD=post -e VUS=1 -e ITERATIONS=100000 bench.js
     - k6 run --out cloud -e HOST=http://localhost:3332 -e ENDPOINT=user -e DATA_FILE=./data/requests.json -e PATH_VARS_FILE=./data/path_requests.json -e HTTP_METHOD=post -e VUS=1 -e ITERATIONS=100000 bench.js
 

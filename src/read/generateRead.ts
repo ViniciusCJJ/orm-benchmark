@@ -7,7 +7,7 @@ import { getPaginated } from "../utils/getPaginated";
 import { validateModelName } from "../utils/validateModelName";
 
 const main = async () => {
-  const quantity = 2;
+  const quantity = 1000;
 
   const ids: any[] = [];
 
@@ -24,10 +24,7 @@ const main = async () => {
 
   console.dir(ids, { depth: null });
 
-  fs.writeFileSync(
-    "./data/path_requests.json",
-    JSON.stringify(ids.map((id) => JSON.stringify(id)))
-  );
+  fs.writeFileSync("./data/path_requests.json", JSON.stringify(ids));
 
   process.exit(0);
 };
